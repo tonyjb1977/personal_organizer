@@ -31,6 +31,7 @@ body {
 
 /* For page content */
 .page {
+    color: white;
     min-height: 90vh;
     height: auto;
     display: flex;
@@ -40,18 +41,6 @@ body {
     padding: 20px;
     animation: slideUp 1s forwards;
     opacity: 0;
-}
-
-/* For background image */
-.bg-img {
-    min-height: 90vh;
-    height: auto;
-    background-size: cover;
-    background-position: center center;
-    background-repeat: no-repeat;
-    background-image: url(../images/hands-in-background.gif);
-    background-blend-mode: overlay;
-    background-color: rgb(94, 43, 43);
 }
 
 /* For page header */

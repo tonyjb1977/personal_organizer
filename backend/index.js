@@ -3,6 +3,7 @@ const express = require('express'); // Import the Express framework for building
 const cors = require('cors'); // Import CORS middleware to enable Cross-Origin Resource Sharing
 // CORS allows your server to accept requests from different origins, which is useful for APIs.
 const mongoose = require('mongoose'); // Import Mongoose for MongoDB object modeling
+const autoIncrement = require('mongoose-auto-increment'); // Import auto-increment plugin for Mongoose
 // Mongoose provides a schema-based solution to model your application data.
 require('dotenv').config(); // Load environment variables from .env file
 

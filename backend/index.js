@@ -51,7 +51,7 @@ const taskSchema = new mongoose.Schema({
   description: { type: mongoose.Schema.Types.String, required: true },
   dueDate: { type: mongoose.Schema.Types.Date, required: true },
   createdOn: { type: mongoose.Schema.Types.Date, required: true, default: Date.now },
-  completed: { type: mongoose.Schema.Types.Boolean, required: true }
+  completed: { type: mongoose.Schema.Types.Boolean, required: true, default: false }
 });
 
 const userSchema = new mongoose.Schema({
@@ -130,7 +130,7 @@ app.get('/tasks', async (req, res) => {
 app.post('/tasks/todo', async (req, res) => {
   try {
       const { title, description, dueDate } = req.body;
-      const userId = '68de7b102d81095598e043d9'; // Temporary userId until user authentication is implemented
+      //const userId = '68de7b102d81095598e043d9'; // Temporary userId until user authentication is implemented
       const taskData = { userId, title, description, dueDate };
       const taskCreate = new Task(taskData);
       const newTask = await taskCreate.save(); // Save the new task to the database

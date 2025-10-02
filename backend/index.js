@@ -46,8 +46,8 @@ app.use(cors(corsOptions)); // Enable CORS with the defined options
 // define the task schema
 // This schema defines the structure of a task in the to-do app, including fields like title, description, due date, and completion status.
 const tasksSchema = new mongoose.Schema({
-  uniqueId: { type: Int16Array, required: true, unique: true },
-  userId: { type: Int16Array, required: true },
+  uniqueId: { type: Number, required: true, unique: true },
+  userId: { type: Number, required: true },
   title: { type: String, required: true },
   description: { type: String, required: true },
   dueDate: { type: Date, required: true },
@@ -56,7 +56,7 @@ const tasksSchema = new mongoose.Schema({
 });
 
 const usersSchema = new mongoose.Schema({
-  userId: { type: Int16Array, required: true },
+  userId: { type: Number, required: true },
   name: { type: String, required: true },
   email: { type: String, required: true },
   role: { type: String, required: true, default: 'user' }, // roles can be 'user' or 'admin'

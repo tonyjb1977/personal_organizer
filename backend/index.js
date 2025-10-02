@@ -1,10 +1,9 @@
 // -------------------------- Setting up dependencies --------------------------
 const express = require('express'); // Import the Express framework for building web applications
-const cors = require('cors'); // Import CORS middleware to enable Cross-Origin Resource Sharing
 // CORS allows your server to accept requests from different origins, which is useful for APIs.
-const mongoose = require('mongoose'); // Import Mongoose for MongoDB object modeling
-const autoIncrement = require('mongoose-auto-increment'); // Import auto-increment plugin for Mongoose
+const cors = require('cors'); // Import CORS middleware to enable Cross-Origin Resource Sharing
 // Mongoose provides a schema-based solution to model your application data.
+const mongoose = require('mongoose'); // Import Mongoose for MongoDB object modeling
 require('dotenv').config(); // Load environment variables from .env file
 
 // -------------------------- Initial APP Configuration ------------------------
@@ -46,9 +45,9 @@ app.use(cors(corsOptions)); // Enable CORS with the defined options
 
 // define the task schema
 // This schema defines the structure of a task in the to-do app, including fields like title, description, due date, and completion status.
-const tasksSchema = new mongoose.Schema({
-  uniqueId: { type: Number, required: true, unique: true },
-  userId: { type: Number, required: true },
+const taskSchema = new mongoose.Schema({
+  uniqueId: { type: Number, required: true, unique: true, autoIncrement: true },
+  userId: { type: Number, required: true, foreignKey: true },
   title: { type: String, required: true },
   description: { type: String, required: true },
   dueDate: { type: Date, required: true },
@@ -56,8 +55,8 @@ const tasksSchema = new mongoose.Schema({
   completed: { type: Boolean, required: true, default: false }
 });
 
-const usersSchema = new mongoose.Schema({
-  userId: { type: Number, required: true },
+const userSchema = new mongoose.Schema({
+  userId: { type: Number, required: true, unique: true, autoIncrement: true },
   name: { type: String, required: true },
   email: { type: String, required: true },
   role: { type: String, required: true, default: 'user' }, // roles can be 'user' or 'admin'
@@ -65,14 +64,8 @@ const usersSchema = new mongoose.Schema({
 });
 
 // create the task model
-const Task = mongoose.model('Tasks', tasksSchema);
-const User = mongoose.model('Users', usersSchema);
-
-// Auto-increment plugin for uniqueId and userId fields
-// This plugin automatically increments the uniqueId and userId fields for each new task created.
-autoIncrement.initialize(mongoose.connection);
-tasksSchema.plugin(autoIncrement.plugin, { model: 'Tasks', field: 'uniqueId', startAt: 1 });
-usersSchema.plugin(autoIncrement.plugin, { model: 'Users', field: 'userId', startAt: 1 });
+const Task = mongoose.model('Task', taskSchema);
+const User = mongoose.model('User', userSchema);
 
 // -------------------------- API Routes -----------------------------
 // GET, POST, PUT, PATCH, DELETE routes for tasks

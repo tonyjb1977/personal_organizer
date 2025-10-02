@@ -1,12 +1,12 @@
- // -------------------------- Get Random Pastel Color --------------------------
-// This function generates a random pastel color in HSL format.
- function getRandomPastelColor() {
+// -------------------------- Get Random Accent Color --------------------------
+// This function generates a random accent color in HSL format.
+ function getRandomAccentColor() {
     // Hue (0-360) can be random for different colors
     const hue = Math.floor(Math.random() * 360);
-    // Saturation (e.g., 70-90%) for pastel effect
-    const saturation = Math.floor(Math.random() * 40) + 20; // 70% to 89%
-    // Lightness (e.g., 80-95%) for pastel effect
-    const lightness = Math.floor(Math.random() * 15) + 10; // 80% to 94%
+    // Saturation
+    const saturation = Math.floor(Math.random() * 40) + 20;
+    // Lightness
+    const lightness = Math.floor(Math.random() * 15) + 10;
 
     return `hsl(${hue}, ${saturation}%, ${lightness}%)`;
 }
@@ -16,9 +16,9 @@ const changeColorBtn = document.getElementById('changeColorBtn');
 
 // Add event listener to change background on click
 changeColorBtn.addEventListener('click', () => {
-    document.body.style.backgroundColor = getRandomPastelColor();
+    document.body.style.backgroundColor = getRandomAccentColor();
 });
 
-// Set an initial random pastel background on page load
-document.body.style.backgroundColor = getRandomPastelColor();
-root.style.setProperty('--accent-color', newColor);
+// Set an initial random accent background on page load
+document.body.style.backgroundColor = getRandomAccentColor();
+// ------------------------ End Random Accent Color ------------------------

@@ -64,17 +64,15 @@ const usersSchema = new mongoose.Schema({
   createdOn: { type: Date, required: true, default: Date.now }
 });
 
-// Auto-increment plugin for uniqueId and userId fields
-// This plugin automatically increments the uniqueId and userId fields for each new task created.
-const autoIncrement = require('mongoose-auto-increment');
-autoIncrement.initialize(mongoose.connection);
-tasksSchema.plugin(autoIncrement.plugin, { model: 'Tasks', field: 'uniqueId', startAt: 1 });
-usersSchema.plugin(autoIncrement.plugin, { model: 'Users', field: 'userId', startAt: 1 });
-
-
 // create the task model
 const Task = mongoose.model('Tasks', tasksSchema);
 const User = mongoose.model('Users', usersSchema);
+
+// Auto-increment plugin for uniqueId and userId fields
+// This plugin automatically increments the uniqueId and userId fields for each new task created.
+autoIncrement.initialize(mongoose.connection);
+tasksSchema.plugin(autoIncrement.plugin, { model: 'Tasks', field: 'uniqueId', startAt: 1 });
+usersSchema.plugin(autoIncrement.plugin, { model: 'Users', field: 'userId', startAt: 1 });
 
 // -------------------------- API Routes -----------------------------
 // GET, POST, PUT, PATCH, DELETE routes for tasks

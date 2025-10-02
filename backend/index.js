@@ -130,8 +130,7 @@ app.get('/tasks', async (req, res) => {
 app.post('/tasks/todo', async (req, res) => {
   try {
       const { title, description, dueDate } = req.body;
-      //const userId = '68de7b102d81095598e043d9'; // Temporary userId until user authentication is implemented
-      const taskData = { userId, title, description, dueDate };
+      const taskData = { title, description, dueDate };
       const taskCreate = new Task(taskData);
       const newTask = await taskCreate.save(); // Save the new task to the database
 

@@ -15,8 +15,8 @@ app.use(express.json()); // Parse incoming JSON requests
 app.use(express.urlencoded({ extended: true })); // Parse URL-encoded data
 
 const corsOptions = {
-  //origin: 'https://todoapp-eight-ecru.vercel.app', // Allow all origins to access the API
-  origin: '*', // Allow all origins to access the API
+  origin: 'https://personal-organizer-umber.vercel.app/', // Allow this origin to access the API
+  //origin: '*', // Allow all origins to access the API
   methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'], // Allow specific HTTP methods
   allowedHeaders: ['Content-Type', 'Authorization'], // Allow specific headers
   credentials: true // Allow credentials to be included in requests
@@ -45,7 +45,9 @@ app.use(cors(corsOptions)); // Enable CORS with the defined options
 
 // define the task schema
 // This schema defines the structure of a task in the to-do app, including fields like title, description, due date, and completion status.
-const taskSchema = new mongoose.Schema({
+const tasksSchema = new mongoose.Schema({
+  uniqueId: { type: Int16Array, required: true, unique: true },
+  userId: { type: Int16Array, required: true },
   title: { type: String, required: true },
   description: { type: String, required: true },
   dueDate: { type: Date, required: true },
@@ -53,13 +55,70 @@ const taskSchema = new mongoose.Schema({
   completed: { type: Boolean, required: true, default: false }
 });
 
+const usersSchema = new mongoose.Schema({
+  userId: { type: Int16Array, required: true },
+  name: { type: String, required: true },
+  email: { type: String, required: true },
+  role: { type: String, required: true, default: 'user' }, // roles can be 'user' or 'admin'
+  createdOn: { type: Date, required: true, default: Date.now }
+});
+
+// Auto-increment plugin for uniqueId and userId fields
+// This plugin automatically increments the uniqueId and userId fields for each new task created.
+const autoIncrement = require('mongoose-auto-increment');
+autoIncrement.initialize(mongoose.connection);
+tasksSchema.plugin(autoIncrement.plugin, { model: 'Tasks', field: 'uniqueId', startAt: 1 });
+usersSchema.plugin(autoIncrement.plugin, { model: 'Users', field: 'userId', startAt: 1 });
+
+
 // create the task model
-const Task = mongoose.model('Task', taskSchema);
+const Task = mongoose.model('Tasks', tasksSchema);
+const User = mongoose.model('Users', usersSchema);
 
 // -------------------------- API Routes -----------------------------
 // GET, POST, PUT, PATCH, DELETE routes for tasks
 // This is where you define the API endpoints for managing tasks in the to-do app
 // This file handles the backend logic for the To-Do app, including task management routes.
+
+// -------------------------- UserProfile Routes -----------------------------
+// Create a new user profile
+app.post('/users/create', async (req, res) => {
+  try {
+      const { name, email, role } = req.body;
+
+      const userData = { name, email, role};
+      const userCreate = new User(userData);
+      const newUser = await userCreate.save(); // Save the new user profile to the database
+
+      res.json(newUser);
+
+      } catch (error) {
+        console.error("Error creating user profile:", error);
+        res.status(500).json({ message: "Error creating user profile!" });
+      }
+});
+
+// Retrieve user profiles
+app.get('/users', async (req, res) => {
+  try {
+    const userRetrieve = await User.find().where({ email: req.query.email, password: req.query.password }); // Fetch user profiles from the database based on email and password
+    res.json(userRetrieve);
+  } catch (error) {
+    console.error("Error fetching user profiles:", error);
+    res.status(500).json({ message: "Error grabbing user profiles!" });
+  }
+});
+
+// Get all user profiles
+app.get('/users', async (req, res) => {
+  try {
+    const userRetrieve = await User.find().sort({ createdOn: -1 }); // Fetch user profiles from the database, sorted by creation date
+    res.json(userRetrieve);
+  } catch (error) {
+    console.error("Error fetching user profiles:", error);
+    res.status(500).json({ message: "Error grabbing user profiles!" });
+  }
+});
 
 // -------------------------- Task Routes -----------------------------
 // Get all the tasks

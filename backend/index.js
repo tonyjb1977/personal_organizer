@@ -15,7 +15,7 @@ app.use(express.json()); // Parse incoming JSON requests
 app.use(express.urlencoded({ extended: true })); // Parse URL-encoded data
 
 const corsOptions = {
-  origin: 'https://personal-organizer-umber.vercel.app/', // Allow this origin to access the API
+  origin: 'https://personal-organizer-umber.vercel.app', // Allow this origin to access the API
   //origin: '*', // Allow all origins to access the API
   methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'], // Allow specific HTTP methods
   allowedHeaders: ['Content-Type', 'Authorization'], // Allow specific headers

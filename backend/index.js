@@ -46,20 +46,20 @@ app.use(cors(corsOptions)); // Enable CORS with the defined options
 // define the task schema
 // This schema defines the structure of a task in the to-do app, including fields like title, description, due date, and completion status.
 const taskSchema = new mongoose.Schema({
-  userId: { type: Number, required: true, foreignKey: true },
-  title: { type: String, required: true },
-  description: { type: String, required: true },
-  dueDate: { type: Date, required: true },
-  createdOn: { type: Date, required: true, default: Date.now },
-  completed: { type: Boolean, required: true, default: false }
+  userId: { type: mongoose.Schema.Types.ObjectId, required: true, foreignKey: true, default: '68de7b102d81095598e043d9' },
+  title: { type: mongoose.Schema.Types.String, required: true },
+  description: { type: mongoose.Schema.Types.String, required: true },
+  dueDate: { type: mongoose.Schema.Types.Date, required: true },
+  createdOn: { type: mongoose.Schema.Types.Date, required: true, default: Date.now },
+  completed: { type: mongoose.Schema.Types.Boolean, required: true }
 });
 
 const userSchema = new mongoose.Schema({
-  name: { type: String, required: true },
-  email: { type: String, required: true },
-  password: { type: String, required: true },
-  role: { type: String, required: true, default: 'user' }, // roles can be 'user' or 'admin'
-  createdOn: { type: Date, required: true, default: Date.now }
+  name: { type: mongoose.Schema.Types.String, required: true },
+  email: { type: mongoose.Schema.Types.String, required: true },
+  password: { type: mongoose.Schema.Types.String, required: true },
+  role: { type: mongoose.Schema.Types.String, required: true, default: 'user' }, // roles can be 'user' or 'admin'
+  createdOn: { type: mongoose.Schema.Types.Date, required: true, default: Date.now }
 });
 
 // create the task model
